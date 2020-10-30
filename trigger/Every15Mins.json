@@ -23,8 +23,8 @@
 		"type": "ScheduleTrigger",
 		"typeProperties": {
 			"recurrence": {
-				"frequency": "Minute",
-				"interval": 15,
+				"frequency": "Day",
+				"interval": 2,
 				"startTime": "2020-10-20T12:46:00Z",
 				"timeZone": "UTC"
 			}
