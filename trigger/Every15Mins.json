@@ -1,0 +1,33 @@
+{
+	"name": "Every15Mins",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "CopyCustomersToBlob",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"dbserverName": "adfsql-guru.database.windows.net",
+					"dbName": "adworks",
+					"userName": "actsadmin",
+					"userPassword": "Password01",
+					"tableSchema": "dbo",
+					"tableName": "Employees",
+					"newParameterFromPipeline": "na"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Minute",
+				"interval": 15,
+				"startTime": "2020-10-20T12:46:00Z",
+				"timeZone": "UTC"
+			}
+		}
+	}
+}

@@ -1,0 +1,35 @@
+{
+	"name": "IngestJsonEmployees_Filter",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "EmployeeJsonData",
+						"type": "DatasetReference"
+					},
+					"name": "EmployeeJson"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlEmployees",
+						"type": "DatasetReference"
+					},
+					"name": "SinkToAdWorks"
+				}
+			],
+			"transformations": [
+				{
+					"name": "FilterInvalid"
+				},
+				{
+					"name": "DerivedDob"
+				}
+			],
+			"script": "source(output(\n\t\tempId as string,\n\t\tempName as string,\n\t\tdob as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: true,\n\tignoreNoFilesFound: false,\n\tlimit: 100,\n\tdocumentForm: 'arrayOfDocuments') ~> EmployeeJson\nDerivedDob filter(!(empName == 'NULL' && isNull(dob))) ~> FilterInvalid\nEmployeeJson derive(dob = toDate(dob, 'dd/MM/yyyy'),\n\t\tempId = toInteger(empId)) ~> DerivedDob\nFilterInvalid sink(input(\n\t\temployee_id as integer,\n\t\tlast_name as string,\n\t\tfirst_name as string,\n\t\tdob as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tmapColumn(\n\t\temployee_id = empId,\n\t\tlast_name = empName,\n\t\tdob\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SinkToAdWorks"
+		}
+	}
+}

@@ -1,0 +1,115 @@
+{
+	"name": "CopyCustomersToBlob",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "AzureSqlDataSet",
+						"type": "DatasetReference",
+						"parameters": {
+							"dbServerName": {
+								"value": "@pipeline().parameters.dbserverName",
+								"type": "Expression"
+							},
+							"databaseName": {
+								"value": "@pipeline().parameters.dbName",
+								"type": "Expression"
+							},
+							"userName": {
+								"value": "@pipeline().parameters.userName",
+								"type": "Expression"
+							},
+							"userPassword": {
+								"value": "@pipeline().parameters.userPassword",
+								"type": "Expression"
+							},
+							"tableSchema": {
+								"value": "@pipeline().parameters.tableSchema",
+								"type": "Expression"
+							},
+							"tableName": {
+								"value": "@pipeline().parameters.tableName",
+								"type": "Expression"
+							},
+							"newParameter": {
+								"value": "@pipeline().parameters.newParameterFromPipeline",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "CustomersBlob",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"parameters": {
+			"dbserverName": {
+				"type": "String"
+			},
+			"dbName": {
+				"type": "String"
+			},
+			"userName": {
+				"type": "String"
+			},
+			"userPassword": {
+				"type": "String"
+			},
+			"tableSchema": {
+				"type": "String"
+			},
+			"tableName": {
+				"type": "String"
+			},
+			"newParameterFromPipeline": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2020-10-20T12:49:17Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

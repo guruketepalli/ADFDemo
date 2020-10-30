@@ -1,0 +1,34 @@
+{
+	"name": "EmployeeJsonData",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "empdata.json",
+				"folderPath": "emp",
+				"container": "adf"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"empId": {
+					"type": "string"
+				},
+				"empName": {
+					"type": "string"
+				},
+				"dob": {
+					"type": "string"
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

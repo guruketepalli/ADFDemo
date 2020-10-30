@@ -1,0 +1,32 @@
+{
+	"name": "IngestEmployees_Filter",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "EmployeeBlob",
+						"type": "DatasetReference"
+					},
+					"name": "EmployeeCsv"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlEmployees",
+						"type": "DatasetReference"
+					},
+					"name": "SinkToAdWorks"
+				}
+			],
+			"transformations": [
+				{
+					"name": "FilterInvalid"
+				}
+			],
+			"script": "source(output(\n\t\tempid as integer,\n\t\tempname as string,\n\t\tdob as date 'dd/MM/yyyy'\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> EmployeeCsv\nEmployeeCsv filter(!(empname == 'NULL' && isNull(dob))) ~> FilterInvalid\nFilterInvalid sink(input(\n\t\temployee_id as integer,\n\t\tlast_name as string,\n\t\tfirst_name as string,\n\t\tdob as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tmapColumn(\n\t\temployee_id = empid,\n\t\tlast_name = empname,\n\t\tdob\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SinkToAdWorks"
+		}
+	}
+}

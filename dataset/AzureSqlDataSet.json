@@ -1,0 +1,68 @@
+{
+	"name": "AzureSqlDataSet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"dbServerName": {
+					"value": "@dataset().dbServerName",
+					"type": "Expression"
+				},
+				"databaseName": {
+					"value": "@dataset().databaseName",
+					"type": "Expression"
+				},
+				"userName": {
+					"value": "@dataset().userName",
+					"type": "Expression"
+				},
+				"userPassword": {
+					"value": "@dataset().userPassword",
+					"type": "Expression"
+				},
+				"xyzParameter": {
+					"value": "@dataset().newParameter",
+					"type": "Expression"
+				}
+			}
+		},
+		"parameters": {
+			"dbServerName": {
+				"type": "String"
+			},
+			"databaseName": {
+				"type": "string"
+			},
+			"userName": {
+				"type": "string"
+			},
+			"userPassword": {
+				"type": "string"
+			},
+			"tableSchema": {
+				"type": "string"
+			},
+			"tableName": {
+				"type": "string"
+			},
+			"newParameter": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().tableSchema",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().tableName",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
